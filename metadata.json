@@ -1,0 +1,10 @@
+{
+  "name": "Remix N3 Trong Tay",
+  "description": "Ứng dụng ôn thi JLPT N3 tối giản, cá nhân hóa lộ trình học từ vựng, ngữ pháp và luyện viết Kanji.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

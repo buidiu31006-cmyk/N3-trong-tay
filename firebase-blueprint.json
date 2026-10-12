@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with study progress, gamification stats, and avatar customizations",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique Google / Firebase Auth ID" },
+        "email": { "type": "string", "format": "email", "description": "User email address" },
+        "fullName": { "type": "string", "description": "Display name of the student" },
+        "photoURL": { "type": "string", "description": "Avatar photo URL" },
+        "gold": { "type": "number", "description": "Accumulated study gold coins" },
+        "streakDays": { "type": "number", "description": "Consecutive study streak days" },
+        "dayCount": { "type": "number", "description": "Current day out of 90-day roadmap" },
+        "equippedAvatar": { "type": "string", "description": "ID of currently equipped avatar" },
+        "equippedCostume": { "type": "string", "description": "ID of currently equipped costume" },
+        "unlockedItems": {
+          "type": "array",
+          "description": "List of unlocked avatar and costume IDs",
+          "items": { "type": "string" }
+        },
+        "lastLoginDate": { "type": "string", "description": "Date of latest daily login (YYYY-MM-DD)" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "fullName", "gold", "streakDays"]
+    },
+    "LobbyPlayer": {
+      "title": "LobbyPlayer",
+      "description": "Active registered players available for multiplayer 1v1 challenges",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "avatar": { "type": "string" },
+        "costume": { "type": "string" },
+        "gold": { "type": "number" },
+        "streakDays": { "type": "number" },
+        "status": { "type": "string", "enum": ["available", "in_match", "offline"] },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "name", "avatar", "status"]
+    },
+    "ChallengeMatch": {
+      "title": "ChallengeMatch",
+      "description": "1v1 challenge match between two logged-in students",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderAvatar": { "type": "string" },
+        "receiverId": { "type": "string" },
+        "receiverName": { "type": "string" },
+        "receiverAvatar": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "declined", "playing", "finished"] },
+        "roomCode": { "type": "string" },
+        "goldBet": { "type": "number" },
+        "winnerId": { "type": "string" }
+      },
+      "required": ["id", "senderId", "receiverId", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Private student data, accessible only by the authenticated owner"
+    },
+    "/lobby/{userId}": {
+      "schema": "LobbyPlayer",
+      "description": "Public lobby presence of registered students for 1v1 challenges"
+    },
+    "/challenges/{challengeId}": {
+      "schema": "ChallengeMatch",
+      "description": "Direct 1v1 challenge invitations and live matches between students"
+    }
+  }
+}
